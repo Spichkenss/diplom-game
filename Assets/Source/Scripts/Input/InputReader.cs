@@ -38,6 +38,8 @@ public class InputReader : MonoBehaviour, InputActions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+
         _interactEventChannel.Invoke(new Empty());
     }
 }
