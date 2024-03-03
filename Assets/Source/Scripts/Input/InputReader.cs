@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputReader : ScriptableObject, InputActions.IPlayerActions
 {
     public event UnityAction<Vector2> MoveEvent = delegate { };
+    public event UnityAction<Vector2> LookEvent = delegate { };
     public event UnityAction<bool> ShootEvent = delegate { };
 
     private InputActions _inputActions;
@@ -29,5 +30,10 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     public void OnShoot(InputAction.CallbackContext context)
     {
         ShootEvent.Invoke(context.ReadValueAsButton());
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        LookEvent.Invoke(context.ReadValue<Vector2>());
     }
 }
