@@ -1,8 +1,10 @@
 ﻿#if UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 /// <summary>
@@ -11,18 +13,21 @@ using UnityEngine;
 [Serializable]
 internal class StateMachineDebugger
 {
-    [SerializeField] [Tooltip("Issues a debug log when a state transition is triggered")]
-    internal bool debugTransitions = false;
+    [SerializeField]
+    [Tooltip("Issues a debug log when a state transition is triggered")]
+    internal bool _debugTransitions = false;
 
     [SerializeField]
     [Tooltip("List all conditions evaluated, the result is read: ConditionName == BooleanResult [PassedTest]")]
-    internal bool appendConditionsInfo = true;
+    internal bool _appendConditionsInfo = true;
 
-    [SerializeField] [Tooltip("List all actions activated by the new State")]
-    internal bool appendActionsInfo = true;
+    [SerializeField]
+    [Tooltip("List all actions activated by the new State")]
+    internal bool _appendActionsInfo = true;
 
-    [SerializeField] [Tooltip("The current State name [Readonly]")]
-    internal string currentState;
+    [SerializeField]
+    [Tooltip("The current State name [Readonly]")]
+    internal string _currentState;
 
     private StateMachine _stateMachine;
     private StringBuilder _logBuilder;
@@ -41,30 +46,29 @@ internal class StateMachineDebugger
         _stateMachine = stateMachine;
         _logBuilder = new StringBuilder();
 
-        currentState = stateMachine._currentState._originSO.name;
+        _currentState = stateMachine.CurrentState.OriginSo.name;
     }
 
     internal void TransitionEvaluationBegin(string targetState)
     {
         _targetState = targetState;
 
-        if (!debugTransitions)
+        if (!_debugTransitions)
             return;
 
         _logBuilder.Clear();
         _logBuilder.AppendLine($"{_stateMachine.name} state changed");
-        _logBuilder.AppendLine($"{currentState}  {SHARP_ARROW}  {_targetState}");
+        _logBuilder.AppendLine($"{_currentState}  {SHARP_ARROW}  {_targetState}");
 
-        if (appendConditionsInfo)
-        {
-            _logBuilder.AppendLine();
-            _logBuilder.AppendLine($"Transition Conditions:");
-        }
+        if (!_appendConditionsInfo) return;
+
+        _logBuilder.AppendLine();
+        _logBuilder.AppendLine($"Transition Conditions:");
     }
 
     internal void TransitionConditionResult(string conditionName, bool result, bool isMet)
     {
-        if (!debugTransitions || _logBuilder.Length == 0 || !appendConditionsInfo)
+        if (!_debugTransitions || _logBuilder.Length == 0 || !_appendConditionsInfo)
             return;
 
         _logBuilder.Append($"    {THICK_ARROW} {conditionName} == {result}");
@@ -78,9 +82,9 @@ internal class StateMachineDebugger
     internal void TransitionEvaluationEnd(bool passed, StateAction[] actions)
     {
         if (passed)
-            currentState = _targetState;
+            _currentState = _targetState;
 
-        if (!debugTransitions || _logBuilder.Length == 0)
+        if (!_debugTransitions || _logBuilder.Length == 0)
             return;
 
         if (passed)
@@ -92,9 +96,9 @@ internal class StateMachineDebugger
         _logBuilder.Clear();
     }
 
-    private void LogActions(StateAction[] actions)
+    private void LogActions(IEnumerable<StateAction> actions)
     {
-        if (!appendActionsInfo)
+        if (!_appendActionsInfo)
             return;
 
         _logBuilder.AppendLine();

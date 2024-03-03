@@ -59,24 +59,24 @@ public abstract class Condition : IStateComponent
 /// </summary>
 public readonly struct StateCondition
 {
-    internal readonly StateMachine _stateMachine;
-    internal readonly Condition _condition;
-    internal readonly bool _expectedResult;
+    internal readonly StateMachine StateMachine;
+    internal readonly Condition Condition;
+    internal readonly bool ExpectedResult;
 
     public StateCondition(StateMachine stateMachine, Condition condition, bool expectedResult)
     {
-        _stateMachine = stateMachine;
-        _condition = condition;
-        _expectedResult = expectedResult;
+        StateMachine = stateMachine;
+        Condition = condition;
+        ExpectedResult = expectedResult;
     }
 
     public bool IsMet()
     {
-        bool statement = _condition.GetStatement();
-        bool isMet = statement == _expectedResult;
+        bool statement = Condition.GetStatement();
+        bool isMet = statement == ExpectedResult;
 
 #if UNITY_EDITOR
-        _stateMachine._debugger.TransitionConditionResult(_condition._originSO.name, statement, isMet);
+        StateMachine._debugger.TransitionConditionResult(Condition._originSO.name, statement, isMet);
 #endif
         return isMet;
     }

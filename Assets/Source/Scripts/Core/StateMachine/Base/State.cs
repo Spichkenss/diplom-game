@@ -1,9 +1,11 @@
-﻿public class State
+﻿using System.Collections.Generic;
+
+public class State
 {
-    internal StateSO _originSO;
-    internal StateMachine _stateMachine;
-    internal StateTransition[] _transitions;
-    internal StateAction[] _actions;
+    internal StateSO OriginSo;
+    internal StateMachine StateMachine;
+    internal StateTransition[] Transitions;
+    internal StateAction[] Actions;
 
     internal State()
     {
@@ -15,52 +17,52 @@
         StateTransition[] transitions,
         StateAction[] actions)
     {
-        _originSO = originSO;
-        _stateMachine = stateMachine;
-        _transitions = transitions;
-        _actions = actions;
+        OriginSo = originSO;
+        StateMachine = stateMachine;
+        Transitions = transitions;
+        Actions = actions;
     }
 
     public void OnStateEnter()
     {
-        void OnStateEnter(IStateComponent[] comps)
-        {
-            for (int i = 0; i < comps.Length; i++)
-                comps[i].OnStateEnter();
-        }
+        OnStateEnter(Transitions);
+        OnStateEnter(Actions);
 
-        OnStateEnter(_transitions);
-        OnStateEnter(_actions);
+        void OnStateEnter(IEnumerable<IStateComponent> components)
+        {
+            foreach (var component in components)
+                component.OnStateEnter();
+        }
     }
 
     public void OnUpdate()
     {
-        for (int i = 0; i < _actions.Length; i++)
-            _actions[i].OnUpdate();
+        foreach (var action in Actions)
+            action.OnUpdate();
     }
 
     public void OnStateExit()
     {
-        void OnStateExit(IStateComponent[] comps)
+        void OnStateExit(IEnumerable<IStateComponent> comps)
         {
-            for (int i = 0; i < comps.Length; i++)
-                comps[i].OnStateExit();
+            foreach (var t in comps)
+                t.OnStateExit();
         }
 
-        OnStateExit(_transitions);
-        OnStateExit(_actions);
+        OnStateExit(Transitions);
+        OnStateExit(Actions);
     }
 
     public bool TryGetTransition(out State state)
     {
         state = null;
 
-        for (int i = 0; i < _transitions.Length; i++)
-            if (_transitions[i].TryGetTransiton(out state))
+        foreach (var transition in Transitions)
+            if (transition.TryGetTransition(out state))
                 break;
 
-        for (int i = 0; i < _transitions.Length; i++)
-            _transitions[i].ClearConditionsCache();
+        foreach (var transition in Transitions)
+            transition.ClearConditionsCache();
 
         return state != null;
     }

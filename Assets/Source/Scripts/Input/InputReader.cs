@@ -6,6 +6,7 @@ public class InputReader : MonoBehaviour, InputActions.IPlayerActions
     [SerializeField] private EventChannel<Vector2> _moveEventChannel;
     [SerializeField] private EventChannel<Vector2> _lookEventChannel;
     [SerializeField] private EventChannel<Empty> _shootEventChannel;
+    [SerializeField] private EventChannel<Empty> _interactEventChannel;
 
     private InputActions _inputActions;
 
@@ -33,5 +34,10 @@ public class InputReader : MonoBehaviour, InputActions.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
         _lookEventChannel.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        _interactEventChannel.Invoke(new Empty());
     }
 }

@@ -13,11 +13,11 @@ public class StateMachine : MonoBehaviour
 #endif
 
     private readonly Dictionary<Type, Component> _cachedComponents = new Dictionary<Type, Component>();
-    internal State _currentState;
+    internal State CurrentState;
 
     private void Awake()
     {
-        _currentState = _transitionTableSO.GetInitialState(this);
+        CurrentState = _transitionTableSO.GetInitialState(this);
 #if UNITY_EDITOR
         _debugger.Awake(this);
 #endif
@@ -31,7 +31,7 @@ public class StateMachine : MonoBehaviour
 
     private void OnAfterAssemblyReload()
     {
-        _currentState = _transitionTableSO.GetInitialState(this);
+        CurrentState = _transitionTableSO.GetInitialState(this);
         _debugger.Awake(this);
     }
 
@@ -43,7 +43,7 @@ public class StateMachine : MonoBehaviour
 
     private void Start()
     {
-        _currentState.OnStateEnter();
+        CurrentState.OnStateEnter();
     }
 
     public new bool TryGetComponent<T>(out T component) where T : Component
@@ -81,16 +81,16 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (_currentState.TryGetTransition(out var transitionState))
+        if (CurrentState.TryGetTransition(out var transitionState))
             Transition(transitionState);
 
-        _currentState.OnUpdate();
+        CurrentState.OnUpdate();
     }
 
     private void Transition(State transitionState)
     {
-        _currentState.OnStateExit();
-        _currentState = transitionState;
-        _currentState.OnStateEnter();
+        CurrentState.OnStateExit();
+        CurrentState = transitionState;
+        CurrentState.OnStateEnter();
     }
 }

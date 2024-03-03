@@ -19,10 +19,10 @@ public class StateSO : ScriptableObject
         var state = new State();
         createdInstances.Add(this, state);
 
-        state._originSO = this;
-        state._stateMachine = stateMachine;
-        state._transitions = new StateTransition[0];
-        state._actions = GetActions(_actions, stateMachine, createdInstances);
+        state.OriginSo = this;
+        state.StateMachine = stateMachine;
+        state.Transitions = new StateTransition[0];
+        state.Actions = GetActions(_actions, stateMachine, createdInstances);
 
         return state;
     }

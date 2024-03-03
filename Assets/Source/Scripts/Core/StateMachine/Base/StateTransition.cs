@@ -27,7 +27,7 @@
     /// </summary>
     /// <param name="state">Returns the state to transition to. Null if the conditions aren't met.</param>
     /// <returns>True if the conditions are met.</returns>
-    public bool TryGetTransiton(out State state)
+    public bool TryGetTransition(out State state)
     {
         state = ShouldTransition() ? _targetState : null;
         return state != null;
@@ -36,19 +36,19 @@
     public void OnStateEnter()
     {
         for (int i = 0; i < _conditions.Length; i++)
-            _conditions[i]._condition.OnStateEnter();
+            _conditions[i].Condition.OnStateEnter();
     }
 
     public void OnStateExit()
     {
         for (int i = 0; i < _conditions.Length; i++)
-            _conditions[i]._condition.OnStateExit();
+            _conditions[i].Condition.OnStateExit();
     }
 
     private bool ShouldTransition()
     {
 #if UNITY_EDITOR
-        _targetState._stateMachine._debugger.TransitionEvaluationBegin(_targetState._originSO.name);
+        _targetState.StateMachine._debugger.TransitionEvaluationBegin(_targetState.OriginSo.name);
 #endif
 
         int count = _resultGroups.Length;
@@ -61,7 +61,7 @@
             ret = ret || _results[i];
 
 #if UNITY_EDITOR
-        _targetState._stateMachine._debugger.TransitionEvaluationEnd(ret, _targetState._actions);
+        _targetState.StateMachine._debugger.TransitionEvaluationEnd(ret, _targetState.Actions);
 #endif
 
         return ret;
@@ -70,6 +70,6 @@
     internal void ClearConditionsCache()
     {
         for (int i = 0; i < _conditions.Length; i++)
-            _conditions[i]._condition.ClearStatementCache();
+            _conditions[i].Condition.ClearStatementCache();
     }
 }

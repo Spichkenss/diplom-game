@@ -41,7 +41,7 @@ public class TransitionTableSO : ScriptableObject
                 transitions.Add(new StateTransition(toState, conditions, resultGroups));
             }
 
-            state._transitions = transitions.ToArray();
+            state.Transitions = transitions.ToArray();
         }
 
         return states.Count > 0
