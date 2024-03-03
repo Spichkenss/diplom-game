@@ -294,6 +294,8 @@ GameObject:
   - component: {fileID: 6159938975582117790}
   - component: {fileID: 2395273367940237223}
   - component: {fileID: 4129396454906267630}
+  - component: {fileID: 2796738099640983055}
+  - component: {fileID: 4644768652676498068}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -357,7 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f6c33738874054fb0b75e43e21f511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputReader: {fileID: 0}
 --- !u!114 &2395273367940237223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e1b453090052048ae5269926d02b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputReader: {fileID: 11400000, guid: 24a1e46392b096d41bf504ba7cb031cf, type: 2}
 --- !u!114 &4129396454906267630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,6 +389,50 @@ MonoBehaviour:
     appendConditionsInfo: 1
     appendActionsInfo: 1
     currentState: 
+--- !u!114 &2796738099640983055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184011285181497180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd893d83fb82402fb8e1780636cbff8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 11400000, guid: e6202542265300a428f82a79c07f9ac1, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2395273367940237223}
+        m_TargetAssemblyTypeName: MovementHandler, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4644768652676498068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184011285181497180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd893d83fb82402fb8e1780636cbff8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 0}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8439532056952634194
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "SO_InputReader", menuName = "Scriptable Objects/Input/InputReader")]
-public class InputReader : ScriptableObject, InputActions.IPlayerActions
+public class InputReader : MonoBehaviour, InputActions.IPlayerActions
 {
-    public event UnityAction<Vector2> MoveEvent = delegate { };
-    public event UnityAction<Vector2> LookEvent = delegate { };
-    public event UnityAction<bool> ShootEvent = delegate { };
+    [SerializeField] private EventChannel<Vector2> _moveEventChannel;
+    [SerializeField] private EventChannel<Vector2> _lookEventChannel;
+    [SerializeField] private EventChannel<Empty> _shootEventChannel;
 
     private InputActions _inputActions;
 
@@ -24,16 +22,16 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        MoveEvent?.Invoke(context.ReadValue<Vector2>());
+        _moveEventChannel.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        ShootEvent.Invoke(context.ReadValueAsButton());
+        _shootEventChannel.Invoke(new Empty());
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        LookEvent.Invoke(context.ReadValue<Vector2>());
+        _lookEventChannel.Invoke(context.ReadValue<Vector2>());
     }
 }
