@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1739.1555, g: 1848.176, b: 2692.7542, a: 1}
+  m_IndirectSpecularColor: {r: 1738.7083, g: 1848.7229, b: 2695.2737, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -443,7 +443,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.56959486, y: -0.000000021213546, z: 0.000000014700999, w: 0.82192564}
+  m_LocalRotation: {x: 0.56959486, y: 0.000000021213543, z: -0.000000014700995, w: 0.82192564}
   m_LocalPosition: {x: 50, y: 17, z: 44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -805,6 +805,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 333430519106739442, guid: b4e7ab68f41e86742902c4106488de72,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 333430519106739442, guid: b4e7ab68f41e86742902c4106488de72,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 333430519106739442, guid: b4e7ab68f41e86742902c4106488de72,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 921307466931232026, guid: b4e7ab68f41e86742902c4106488de72,
         type: 3}
       propertyPath: _unityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1140,12 +1155,12 @@ PrefabInstance:
     - target: {fileID: 4406965414078417796, guid: 17ec03f0b4056f140a2700ec138c4f5d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000021213546
+      value: 0.000000021213543
       objectReference: {fileID: 0}
     - target: {fileID: 4406965414078417796, guid: 17ec03f0b4056f140a2700ec138c4f5d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000014700999
+      value: -0.000000014700995
       objectReference: {fileID: 0}
     - target: {fileID: 4644768652676498068, guid: 17ec03f0b4056f140a2700ec138c4f5d,
         type: 3}

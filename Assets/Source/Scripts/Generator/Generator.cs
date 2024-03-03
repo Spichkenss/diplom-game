@@ -2,11 +2,10 @@ using UnityEngine;
 
 namespace Source.Scripts.Generator
 {
-    public class GeneratorInteraction : InteractableBehaviour
+    public class Generator : MonoBehaviour, IInteractable
     {
-        public override void Interact()
+        public void Interact()
         {
-            base.Interact();
             Debug.Log("Generator interacted");
         }
     }
