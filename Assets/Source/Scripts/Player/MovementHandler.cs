@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+[RequireComponent(typeof(CharacterController))]
+public class MovementHandler : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
+
+    [NonSerialized] public Vector3 MovementVector;
+    [NonSerialized] public Vector2 InputVector;
 
     private void OnEnable()
     {
@@ -16,11 +21,6 @@ public class Movement : MonoBehaviour
 
     private void OnMove(Vector2 inputVector)
     {
-        Debug.Log(inputVector);
-    }
-
-    private void Start()
-    {
-        Debug.Log("Hello World!");
+        InputVector = inputVector;
     }
 }
