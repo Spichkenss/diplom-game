@@ -7,7 +7,7 @@ public class Interactor : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider collider in colliders)
         {
-            if (collider.TryGetComponent(out IInteractable interactable))
+            if (collider.TryGetComponent<Interactable>(out Interactable interactable))
             {
                 interactable.Interact();
             }

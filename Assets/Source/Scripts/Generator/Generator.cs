@@ -1,12 +1,11 @@
 using UnityEngine;
 
-namespace Source.Scripts.Generator
+public class Generator : Interactable
 {
-    public class Generator : MonoBehaviour, IInteractable
+    [SerializeField] private string _objectName;
+
+    public override void Interact()
     {
-        public void Interact()
-        {
-            Debug.Log("Generator interacted");
-        }
+        Debug.Log("Generator interacted " + _objectName);
     }
 }
