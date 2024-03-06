@@ -28,6 +28,8 @@ public class InputReader : MonoBehaviour, InputActions.IPlayerActions
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+
         _shootEventChannel.Invoke(new Empty());
     }
 

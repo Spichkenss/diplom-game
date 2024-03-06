@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130bc08b1ef56c84fad5fdcc8492032a, type: 3}
+  m_Name: SO_M4
+  m_EditorClassIdentifier: 
+  weaponName: M4
+  damage: 24
+  maxDistance: 1000
+  currentAmmo: 9838
+  magazineSize: 30
+  extraAmmo: 120
+  fireRate: 10
+  reloadTime: 3
+  isReloading: 0
