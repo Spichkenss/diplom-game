@@ -16,7 +16,7 @@ public class HealthView : MonoBehaviour
 
     private void OnHealthChanged(float newValue)
     {
-        _healthSlider.value = newValue;
+        _healthSlider.value = newValue / 100;
         _healthTextAmount.text = newValue.ToString();
     }
 }
