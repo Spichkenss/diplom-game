@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SO_SetMovementVectorAction
   m_EditorClassIdentifier: 
   description: 
-  moveSpeed: 10
+  moveSpeed: 3

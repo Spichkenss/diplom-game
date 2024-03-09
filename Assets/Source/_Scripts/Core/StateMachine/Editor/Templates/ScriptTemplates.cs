@@ -7,7 +7,7 @@ using UnityEngine;
 
 internal class ScriptTemplates
 {
-    private static readonly string _path = "Assets/Source/Scripts/Core/StateMachine/Editor/Templates";
+    private static readonly string _path = "Assets/Source/_Scripts/Core/StateMachine/Editor/Templates";
 
     [MenuItem("Assets/Create/Scripts/State Machine/Action Script", false, 0)]
     public static void CreateActionScript() =>

@@ -12,8 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f721d01601884aa48cada6642c1f4bc3, type: 3}
   m_Name: SO_InputReader
   m_EditorClassIdentifier: 
-  _moveEventChannel: {fileID: 11400000, guid: e6202542265300a428f82a79c07f9ac1, type: 2}
-  _lookEventChannel: {fileID: 11400000, guid: 73715588f8d6718469d9f5f1e2d50946, type: 2}
-  _shootEventChannel: {fileID: 11400000, guid: 60f0bceb6c8acb84895274dbb00544d6, type: 2}
-  _interactEventChannel: {fileID: 11400000, guid: 8621df70466bb944489c0c308a94f16e,
-    type: 2}

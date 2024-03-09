@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour, InputActions.IPlayerActions
+[CreateAssetMenu(fileName = "SO_InputReader", menuName = "Scriptable Objects/Input/SO_InputReader")]
+public class InputReader : ScriptableObject, InputActions.IPlayerActions
 {
-    [SerializeField] private EventChannel<Vector2> _moveEventChannel;
-    [SerializeField] private EventChannel<Vector2> _lookEventChannel;
-    [SerializeField] private EventChannel<Empty> _shootEventChannel;
-    [SerializeField] private EventChannel<Empty> _interactEventChannel;
+    public event UnityAction<Vector2> MoveEvent = delegate { };
+    public event UnityAction<Vector2> LookEvent = delegate { };
+    public event UnityAction<Empty> ShootEvent = delegate { };
+    public event UnityAction<Empty> InteractEvent = delegate { };
 
     private InputActions _inputActions;
 
@@ -23,25 +25,25 @@ public class InputReader : MonoBehaviour, InputActions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _moveEventChannel.Invoke(context.ReadValue<Vector2>());
+        MoveEvent.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        LookEvent.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
-        _shootEventChannel.Invoke(new Empty());
-    }
-
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        _lookEventChannel.Invoke(context.ReadValue<Vector2>());
+        ShootEvent.Invoke(new Empty());
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
-        _interactEventChannel.Invoke(new Empty());
+        InteractEvent.Invoke(new Empty());
     }
 }

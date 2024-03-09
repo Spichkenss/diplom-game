@@ -4,7 +4,7 @@
     menuName = "Scriptable Objects/State Machine/Actions/SO_HandleRotationAction")]
 public class HandleRotationActionSO : StateActionSO<HandleRotationAction>
 {
-    public float rotationSpeed = 20f;
+    public float rotationSpeed = 30f;
 }
 
 public class HandleRotationAction : StateAction
