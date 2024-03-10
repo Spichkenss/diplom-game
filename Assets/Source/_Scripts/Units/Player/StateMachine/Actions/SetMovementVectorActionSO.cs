@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "SO_SetMovementVectorAction", menuName = "Scriptable Objects/State Machine/Actions/SO_SetMovementVectorAction")]
+[CreateAssetMenu(
+    fileName = "SO_SetMovementVectorAction",
+    menuName = "Scriptable Objects/State Machine/Actions/Player/SO_SetMovementVectorAction"
+)]
 public class SetMovementVectorActionSO : StateActionSO<SetMovementVectorAction>
 {
     public float moveSpeed = 10f;

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3146673371439015624}
   - component: {fileID: 7296735719880507153}
   - component: {fileID: 5710559004754863094}
+  - component: {fileID: 5631599806848107777}
   m_Layer: 0
   m_Name: Weapon_AK_47
   m_TagString: Untagged
@@ -122,8 +123,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: 24a1e46392b096d41bf504ba7cb031cf, type: 2}
-  _muzzle: {fileID: 8382173899187876957}
-  _weaponData: {fileID: 11400000, guid: 9a51a3cc5b2cd164886d5474d856d38d, type: 2}
+  Muzzle: {fileID: 8382173899187876957}
+  WeaponData: {fileID: 11400000, guid: 9a51a3cc5b2cd164886d5474d856d38d, type: 2}
+  RigBuilder: {fileID: 0}
+--- !u!114 &5631599806848107777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507115203825370909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a3e048b25b87b54fbee55bc6793e8e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionTableSO: {fileID: 11400000, guid: 1a27d6e8cb07c0849ac258351cba1f28, type: 2}
+  _debugger:
+    _debugTransitions: 0
+    _appendConditionsInfo: 1
+    _appendActionsInfo: 1
+    _currentState: 
 --- !u!1 &3800151592255588267
 GameObject:
   m_ObjectHideFlags: 0

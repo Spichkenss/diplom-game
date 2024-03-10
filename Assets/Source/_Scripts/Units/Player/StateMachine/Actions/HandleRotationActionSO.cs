@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_HandleRotationAction",
-    menuName = "Scriptable Objects/State Machine/Actions/SO_HandleRotationAction")]
+
+[CreateAssetMenu(
+    fileName = "SO_HandleRotationAction",
+    menuName = "Scriptable Objects/State Machine/Actions/Player/SO_HandleRotationAction"
+)]
 public class HandleRotationActionSO : StateActionSO<HandleRotationAction>
 {
     public float rotationSpeed = 30f;

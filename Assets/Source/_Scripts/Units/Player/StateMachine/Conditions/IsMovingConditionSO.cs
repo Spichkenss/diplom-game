@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_IsMovingCondition", menuName = "Scriptable Objects/State Machine/Conditions/SO_IsMovingCondition")]
+
+[CreateAssetMenu(
+	fileName = "SO_IsMovingCondition",
+	menuName = "Scriptable Objects/State Machine/Conditions/Player/SO_IsMovingCondition"
+)]
 public class IsMovingConditionSO : StateConditionSO<IsMovingCondition>
 {
 	public float treshold = 0.02f;
@@ -15,17 +19,17 @@ public class IsMovingCondition : Condition
 	{
 		_movementHandler = stateMachine.GetComponent<MovementHandler>();
 	}
-	
+
 	protected override bool Statement()
 	{
 		Vector3 movementInput = _movementHandler.InputVector;
 		return movementInput.magnitude > OriginSO.treshold;
 	}
-	
+
 	public override void OnStateEnter()
 	{
 	}
-	
+
 	public override void OnStateExit()
 	{
 	}

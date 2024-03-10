@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_ApplyGravityAction", menuName = "Scriptable Objects/State Machine/Actions/SO_ApplyGravityAction")]
+
+[CreateAssetMenu(
+	fileName = "SO_ApplyGravityAction",
+	menuName = "Scriptable Objects/State Machine/Actions/Player/SO_ApplyGravityAction"
+)]
 public class ApplyGravityActionSO : StateActionSO<ApplyGravityAction>
 {
 	public float verticalPull = -5f;
@@ -15,7 +19,7 @@ public class ApplyGravityAction : StateAction
 	{
 		_movementHandler = stateMachine.GetComponent<MovementHandler>();
 	}
-	
+
 	public override void OnUpdate()
 	{
 		_movementHandler.MovementVector.y = OriginSO.verticalPull;

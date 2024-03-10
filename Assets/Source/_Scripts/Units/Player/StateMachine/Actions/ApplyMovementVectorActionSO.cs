@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_ApplyMovementVectorAction", menuName = "Scriptable Objects/State Machine/Actions/SO_ApplyMovementVectorAction")]
+
+[CreateAssetMenu(
+	fileName = "SO_ApplyMovementVectorAction",
+	menuName = "Scriptable Objects/State Machine/Actions/Player/SO_ApplyMovementVectorAction"
+	)]
 public class ApplyMovementVectorActionSO : StateActionSO
 {
 	protected override StateAction CreateAction() => new ApplyMovementVectorAction();
@@ -17,7 +21,7 @@ public class ApplyMovementVectorAction : StateAction
 		_movementHandler = stateMachine.GetComponent<MovementHandler>();
 		_characterController = stateMachine.GetComponent<CharacterController>();
 	}
-	
+
 	public override void OnUpdate()
 	{
 		var movementVector = _movementHandler.MovementVector;

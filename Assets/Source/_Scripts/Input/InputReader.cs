@@ -7,7 +7,8 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
 {
     public event UnityAction<Vector2> MoveEvent = delegate { };
     public event UnityAction<Vector2> LookEvent = delegate { };
-    public event UnityAction ShootEvent = delegate { };
+    public event UnityAction<bool> ShootEvent = delegate { };
+    public event UnityAction ReloadEvent = delegate { };
     public event UnityAction InteractEvent = delegate { };
 
     private InputActions _inputActions;
@@ -35,9 +36,14 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        ShootEvent.Invoke(context.ReadValueAsButton());
+    }
+
+    public void OnReload(InputAction.CallbackContext context)
+    {
         if (!context.performed) return;
 
-        ShootEvent.Invoke();
+        ReloadEvent.Invoke();
     }
 
     public void OnInteract(InputAction.CallbackContext context)
