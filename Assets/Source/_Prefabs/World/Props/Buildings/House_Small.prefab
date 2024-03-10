@@ -1029,7 +1029,7 @@ GameObject:
   - component: {fileID: 8002691660865613114}
   - component: {fileID: 1619465360603669320}
   - component: {fileID: 6765495075221250710}
-  - component: {fileID: 9087305159376393159}
+  - component: {fileID: 6454148357967442313}
   m_Layer: 0
   m_Name: House_Small
   m_TagString: Untagged
@@ -1122,7 +1122,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9087305159376393159
+--- !u!65 &6454148357967442313
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1141,8 +1141,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.6479998, y: 4.5100355, z: 6.96}
-  m_Center: {x: 0, y: -0.024982214, z: -1}
+  m_Size: {x: 4.1605234, y: 4.5100355, z: 6.96}
+  m_Center: {x: -0.011435032, y: -0.024982214, z: -1}
 --- !u!1 &6531575732328879365
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 130bc08b1ef56c84fad5fdcc8492032a, type: 3}
-  m_Name: SO_M4
+  m_Name: SO_AK
   m_EditorClassIdentifier: 
   weaponName: M4
   damage: 30
-  maxDistance: 400
-  currentAmmo: 10000
+  maxDistance: 1000
+  currentAmmo: 9794
   magazineSize: 10000
   extraAmmo: 120
-  fireRate: 100
+  fireRate: 1000
   reloadTime: 3
   isReloading: 0

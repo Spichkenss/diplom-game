@@ -12,11 +12,13 @@ public class HandleRotationAction : StateAction
     protected new HandleRotationActionSO OriginSO => (HandleRotationActionSO)base.OriginSO;
     private Transform _transform;
     private RotationHandler _rotationHandler;
+    private Camera _camera;
 
     public override void Awake(StateMachine stateMachine)
     {
         _transform = stateMachine.GetComponent<Transform>();
         _rotationHandler = stateMachine.GetComponent<RotationHandler>();
+        _camera = Camera.main;
     }
 
     public override void OnUpdate()
@@ -32,7 +34,9 @@ public class HandleRotationAction : StateAction
         if (direction == Vector3.zero) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        _transform.rotation = Quaternion.Slerp(_transform.rotation, lookRotation, Time.deltaTime * OriginSO.rotationSpeed);
+        _transform.rotation = Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * OriginSO.rotationSpeed);
+
+        Debug.DrawRay(_transform.position, _transform.forward * 100f, Color.red);
     }
 
     private Vector3 GetMouseWorldPosition()
@@ -41,7 +45,7 @@ public class HandleRotationAction : StateAction
         return Camera.main.ScreenToWorldPoint(new Vector3(
             mousePosition.x,
             mousePosition.y,
-            Camera.main.transform.position.y
+            _camera.transform.position.y
         ));
     }
 }

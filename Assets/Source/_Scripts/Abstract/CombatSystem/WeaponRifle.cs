@@ -11,6 +11,7 @@ public class WeaponRifle : Weapon
         {
             if (hitInfo.transform.TryGetComponent<Damageable>(out Damageable damageable))
             {
+                Debug.Log("Hit to damagable");
                 damageable.TakeDamage(_weaponData.damage);
             }
         }

@@ -175,7 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5198297428496657475}
-  - component: {fileID: 4647370522448346151}
+  - component: {fileID: 2936294765682059154}
   m_Layer: 0
   m_Name: Enter_Boards
   m_TagString: Untagged
@@ -201,7 +201,7 @@ Transform:
   - {fileID: 8856609464853147820}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4647370522448346151
+--- !u!65 &2936294765682059154
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,8 +220,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6834793, y: 1.3961725, z: 0.6168824}
-  m_Center: {x: -0.010753632, y: 0.4201237, z: -0.19155881}
+  m_Size: {x: 1.690417, y: 1.4559412, z: 0.31625652}
+  m_Center: {x: 0.025990367, y: 0.44815385, z: 0.021425009}
 --- !u!1 &7193991800934419632
 GameObject:
   m_ObjectHideFlags: 0

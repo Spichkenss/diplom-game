@@ -4,10 +4,26 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] private InputReader _inputReader;
     [SerializeField] protected Transform _muzzle;
     [SerializeField] protected WeaponData _weaponData;
 
     protected float _timeSinceLastShot;
+
+    private void OnEnable()
+    {
+        _inputReader.ShootEvent += Shoot;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.ShootEvent -= Shoot;
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(_muzzle.position, _muzzle.forward * 100f, Color.green);
+    }
 
     public abstract void Shoot();
 
