@@ -9,6 +9,7 @@ public class RotationHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        Cursor.visible = false;
         _inputReader.LookEvent += OnLook;
     }
 

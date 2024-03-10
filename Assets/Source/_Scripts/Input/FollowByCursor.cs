@@ -31,7 +31,7 @@ public class FollowByCursor : MonoBehaviour
     {
         // Переводим координаты курсора в мировые координаты
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        mouseWorldPosition.y = 1f;
+        mouseWorldPosition.y = 0.5f;
         transform.position = mouseWorldPosition;
     }
 
@@ -42,10 +42,9 @@ public class FollowByCursor : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        var mousePosition = _mousePosition;
         return _camera.ScreenToWorldPoint(new Vector3(
-            mousePosition.x,
-            mousePosition.y,
+            _mousePosition.x,
+            _mousePosition.y,
             _camera.transform.position.y
         ));
     }
