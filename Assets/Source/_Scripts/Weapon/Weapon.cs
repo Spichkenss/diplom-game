@@ -2,19 +2,19 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 
-public abstract class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
-
-    [NonSerialized] public bool IsShootingHolding;
     [NonSerialized] public float FireCooldown = 0f;
+    [NonSerialized] public bool IsShootingHolding;
 
-    public Transform Muzzle;
+    public MuzzleController Muzzle;
     public WeaponData WeaponData;
     public RigBuilder RigBuilder;
 
-    public abstract void Shoot();
+    public event UnityAction ShotFired = delegate { };
 
     private void OnEnable()
     {
@@ -28,6 +28,11 @@ public abstract class Weapon : MonoBehaviour
         _inputReader.ReloadEvent -= OnReloadingPressed;
     }
 
+    public virtual void Shoot()
+    {
+        ShotFired.Invoke();
+    }
+
     private void OnShootingHold(bool state)
     {
         IsShootingHolding = state;
@@ -35,7 +40,6 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnReloadingPressed()
     {
-        Debug.Log($"{WeaponData.currentAmmo}, {WeaponData.magazineSize}");
         WeaponData.isReloading = WeaponData.currentAmmo != WeaponData.magazineSize;
     }
 
@@ -46,26 +50,23 @@ public abstract class Weapon : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        Debug.Log("Reload start");
-
         WeaponData.isReloading = true;
 
         lock (WeaponData)
         {
             yield return new WaitForSeconds(WeaponData.reloadTime);
 
-            WeaponData.currentAmmo = 30;
+            var diff = WeaponData.magazineSize - WeaponData.currentAmmo;
 
-            // var diff = WeaponData.magazineSize - WeaponData.currentAmmo;
-            // if (diff > WeaponData.extraAmmo)
-            // {
-            //     WeaponData.extraAmmo -= diff;
-            //     WeaponData.currentAmmo += diff;
-            // }
+            if (WeaponData.extraAmmo - diff <= 0)
+            {
+                diff = WeaponData.extraAmmo;
+            }
+            WeaponData.currentAmmo += diff;
+            WeaponData.extraAmmo -= diff;
+
         }
 
         WeaponData.isReloading = false;
-        Debug.Log("Reload end");
     }
 }
-

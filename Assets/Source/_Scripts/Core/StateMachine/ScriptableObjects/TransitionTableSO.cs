@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "NewTransitionTable", menuName = "Scriptable Objects/State Machine/Transition Table")]
 public class TransitionTableSO : ScriptableObject
 {
-    [SerializeField] private TransitionItem[] _transitions = default;
+    public enum Operator
+    {
+        And,
+        Or
+    }
+
+    public enum Result
+    {
+        True,
+        False
+    }
+
+    [SerializeField] private TransitionItem[] _transitions;
 
     /// <summary>
-    /// Will get the initial state and instantiate all subsequent states, transitions, actions and conditions.
+    ///     Will get the initial state and instantiate all subsequent states, transitions, actions and conditions.
     /// </summary>
     internal State GetInitialState(StateMachine stateMachine)
     {
@@ -56,17 +67,17 @@ public class TransitionTableSO : ScriptableObject
         out StateCondition[] conditions,
         out int[] resultGroups)
     {
-        int count = conditionUsages.Length;
+        var count = conditionUsages.Length;
         conditions = new StateCondition[count];
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             conditions[i] = conditionUsages[i].Condition.GetCondition(
                 stateMachine, conditionUsages[i].ExpectedResult == Result.True, createdInstances);
 
 
-        List<int> resultGroupsList = new List<int>();
-        for (int i = 0; i < count; i++)
+        var resultGroupsList = new List<int>();
+        for (var i = 0; i < count; i++)
         {
-            int idx = resultGroupsList.Count;
+            var idx = resultGroupsList.Count;
             resultGroupsList.Add(1);
             while (i < count - 1 && conditionUsages[i].Operator == Operator.And)
             {
@@ -92,17 +103,5 @@ public class TransitionTableSO : ScriptableObject
         public Result ExpectedResult;
         public StateConditionSO Condition;
         public Operator Operator;
-    }
-
-    public enum Result
-    {
-        True,
-        False
-    }
-
-    public enum Operator
-    {
-        And,
-        Or
     }
 }

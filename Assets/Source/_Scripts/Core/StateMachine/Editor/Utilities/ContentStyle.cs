@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-
 internal static class ContentStyle
 {
+    private static bool _initialised;
     internal static Color DarkGray { get; private set; }
     internal static Color LightGray { get; private set; }
     internal static Color Focused { get; private set; }
@@ -16,8 +16,6 @@ internal static class ContentStyle
     internal static GUIStyle StateListStyle { get; private set; }
     internal static GUIStyle WithPadding { get; private set; }
     internal static GUIStyle WithPaddingAndMargins { get; private set; }
-
-    private static bool _initialised = false;
 
     [InitializeOnLoadMethod]
     internal static void Initialize()
@@ -39,7 +37,7 @@ internal static class ContentStyle
         WithPaddingAndMargins = new GUIStyle { padding = Padding, margin = Margin };
 
         //Prepare a modification of the GUIStyleState to feed into the GUIStyle, for the text colour
-        GUIStyleState guiStyleStateNormal = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label.normal;
+        var guiStyleStateNormal = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label.normal;
         //bright text for Professional skin, dark text for Personal skin
         guiStyleStateNormal.textColor = EditorGUIUtility.isProSkin
             ? new Color(.85f, .85f, .85f)
@@ -53,7 +51,7 @@ internal static class ContentStyle
             fontStyle = FontStyle.Bold,
             fontSize = 12,
             margin = Margin,
-            normal = guiStyleStateNormal,
+            normal = guiStyleStateNormal
         };
     }
 }

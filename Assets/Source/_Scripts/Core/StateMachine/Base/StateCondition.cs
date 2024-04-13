@@ -1,25 +1,34 @@
 ﻿/// <summary>
-/// Class that represents a conditional statement.
+///     Class that represents a conditional statement.
 /// </summary>
 public abstract class Condition : IStateComponent
 {
-    private bool _isCached = false;
-    private bool _cachedStatement = default;
+    private bool _cachedStatement;
+    private bool _isCached;
     internal StateConditionSO _originSO;
 
     /// <summary>
-    /// Use this property to access shared data from the <see cref="StateConditionSO"/> that corresponds to this <see cref="Condition"/>
+    ///     Use this property to access shared data from the <see cref="StateConditionSO" /> that corresponds to this
+    ///     <see cref="Condition" />
     /// </summary>
     protected StateConditionSO OriginSO => _originSO;
 
+    public virtual void OnStateEnter()
+    {
+    }
+
+    public virtual void OnStateExit()
+    {
+    }
+
     /// <summary>
-    /// Specify the statement to evaluate.
+    ///     Specify the statement to evaluate.
     /// </summary>
     /// <returns></returns>
     protected abstract bool Statement();
 
     /// <summary>
-    /// Wrap the <see cref="Statement"/> so it can be cached.
+    ///     Wrap the <see cref="Statement" /> so it can be cached.
     /// </summary>
     internal bool GetStatement()
     {
@@ -38,24 +47,16 @@ public abstract class Condition : IStateComponent
     }
 
     /// <summary>
-    /// Awake is called when creating a new instance. Use this method to cache the components needed for the condition.
+    ///     Awake is called when creating a new instance. Use this method to cache the components needed for the condition.
     /// </summary>
-    /// <param name="stateMachine">The <see cref="StateMachine"/> this instance belongs to.</param>
+    /// <param name="stateMachine">The <see cref="StateMachine" /> this instance belongs to.</param>
     public virtual void Awake(StateMachine stateMachine)
-    {
-    }
-
-    public virtual void OnStateEnter()
-    {
-    }
-
-    public virtual void OnStateExit()
     {
     }
 }
 
 /// <summary>
-/// Struct containing a Condition and its expected result.
+///     Struct containing a Condition and its expected result.
 /// </summary>
 public readonly struct StateCondition
 {
@@ -72,8 +73,8 @@ public readonly struct StateCondition
 
     public bool IsMet()
     {
-        bool statement = Condition.GetStatement();
-        bool isMet = statement == ExpectedResult;
+        var statement = Condition.GetStatement();
+        var isMet = statement == ExpectedResult;
 
 #if UNITY_EDITOR
         StateMachine._debugger.TransitionConditionResult(Condition._originSO.name, statement, isMet);

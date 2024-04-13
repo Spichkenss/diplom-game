@@ -1,9 +1,9 @@
 ﻿public class StateTransition : IStateComponent
 {
-    private State _targetState;
     private StateCondition[] _conditions;
     private int[] _resultGroups;
     private bool[] _results;
+    private State _targetState;
 
     internal StateTransition()
     {
@@ -12,6 +12,18 @@
     public StateTransition(State targetState, StateCondition[] conditions, int[] resultGroups = null)
     {
         Init(targetState, conditions, resultGroups);
+    }
+
+    public void OnStateEnter()
+    {
+        for (var i = 0; i < _conditions.Length; i++)
+            _conditions[i].Condition.OnStateEnter();
+    }
+
+    public void OnStateExit()
+    {
+        for (var i = 0; i < _conditions.Length; i++)
+            _conditions[i].Condition.OnStateExit();
     }
 
     internal void Init(State targetState, StateCondition[] conditions, int[] resultGroups = null)
@@ -23,7 +35,7 @@
     }
 
     /// <summary>
-    /// Checks wether the conditions to transition to the target state are met.
+    ///     Checks wether the conditions to transition to the target state are met.
     /// </summary>
     /// <param name="state">Returns the state to transition to. Null if the conditions aren't met.</param>
     /// <returns>True if the conditions are met.</returns>
@@ -33,31 +45,19 @@
         return state != null;
     }
 
-    public void OnStateEnter()
-    {
-        for (int i = 0; i < _conditions.Length; i++)
-            _conditions[i].Condition.OnStateEnter();
-    }
-
-    public void OnStateExit()
-    {
-        for (int i = 0; i < _conditions.Length; i++)
-            _conditions[i].Condition.OnStateExit();
-    }
-
     private bool ShouldTransition()
     {
 #if UNITY_EDITOR
         _targetState.StateMachine._debugger.TransitionEvaluationBegin(_targetState.OriginSo.name);
 #endif
 
-        int count = _resultGroups.Length;
+        var count = _resultGroups.Length;
         for (int i = 0, idx = 0; i < count && idx < _conditions.Length; i++)
-        for (int j = 0; j < _resultGroups[i]; j++, idx++)
+        for (var j = 0; j < _resultGroups[i]; j++, idx++)
             _results[i] = j == 0 ? _conditions[idx].IsMet() : _results[i] && _conditions[idx].IsMet();
 
-        bool ret = false;
-        for (int i = 0; i < count && !ret; i++)
+        var ret = false;
+        for (var i = 0; i < count && !ret; i++)
             ret = ret || _results[i];
 
 #if UNITY_EDITOR
@@ -69,7 +69,7 @@
 
     internal void ClearConditionsCache()
     {
-        for (int i = 0; i < _conditions.Length; i++)
+        for (var i = 0; i < _conditions.Length; i++)
             _conditions[i].Condition.ClearStatementCache();
     }
 }

@@ -4,42 +4,38 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 /// <summary>
-/// Class specialized in debugging the state transitions, should only be used while in editor mode.
+///     Class specialized in debugging the state transitions, should only be used while in editor mode.
 /// </summary>
 [Serializable]
 internal class StateMachineDebugger
 {
-    [SerializeField]
-    [Tooltip("Issues a debug log when a state transition is triggered")]
-    internal bool _debugTransitions = false;
-
-    [SerializeField]
-    [Tooltip("List all conditions evaluated, the result is read: ConditionName == BooleanResult [PassedTest]")]
-    internal bool _appendConditionsInfo = true;
-
-    [SerializeField]
-    [Tooltip("List all actions activated by the new State")]
-    internal bool _appendActionsInfo = true;
-
-    [SerializeField]
-    [Tooltip("The current State name [Readonly]")]
-    internal string _currentState;
-
-    private StateMachine _stateMachine;
-    private StringBuilder _logBuilder;
-    private string _targetState = string.Empty;
-
     private const string CHECK_MARK = "\u2714";
     private const string UNCHECK_MARK = "\u2718";
     private const string THICK_ARROW = "\u279C";
     private const string SHARP_ARROW = "\u27A4";
 
+    [SerializeField] [Tooltip("Issues a debug log when a state transition is triggered")]
+    internal bool _debugTransitions;
+
+    [SerializeField]
+    [Tooltip("List all conditions evaluated, the result is read: ConditionName == BooleanResult [PassedTest]")]
+    internal bool _appendConditionsInfo = true;
+
+    [SerializeField] [Tooltip("List all actions activated by the new State")]
+    internal bool _appendActionsInfo = true;
+
+    [SerializeField] [Tooltip("The current State name [Readonly]")]
+    internal string _currentState;
+
+    private StringBuilder _logBuilder;
+
+    private StateMachine _stateMachine;
+    private string _targetState = string.Empty;
+
     /// <summary>
-    /// Must be called together with <c>StateMachine.Awake()</c>
+    ///     Must be called together with <c>StateMachine.Awake()</c>
     /// </summary>
     internal void Awake(StateMachine stateMachine)
     {
@@ -63,7 +59,7 @@ internal class StateMachineDebugger
         if (!_appendConditionsInfo) return;
 
         _logBuilder.AppendLine();
-        _logBuilder.AppendLine($"Transition Conditions:");
+        _logBuilder.AppendLine("Transition Conditions:");
     }
 
     internal void TransitionConditionResult(string conditionName, bool result, bool isMet)
@@ -104,10 +100,7 @@ internal class StateMachineDebugger
         _logBuilder.AppendLine();
         _logBuilder.AppendLine("State Actions:");
 
-        foreach (StateAction action in actions)
-        {
-            _logBuilder.AppendLine($"    {THICK_ARROW} {action._originSO.name}");
-        }
+        foreach (var action in actions) _logBuilder.AppendLine($"    {THICK_ARROW} {action._originSO.name}");
     }
 
     private void PrintDebugLog()

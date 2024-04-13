@@ -4,10 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class MovementHandler : MonoBehaviour
 {
-    [NonSerialized] public Vector3 MovementVector;
-    [NonSerialized] public Vector2 InputVector;
-
     [SerializeField] private InputReader _inputReader;
+    [NonSerialized] public Vector2 InputVector;
+    [NonSerialized] public Vector3 MovementVector;
 
     private void OnEnable()
     {

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "New State", menuName = "Scriptable Objects/State Machine/State")]
 public class StateSO : ScriptableObject
 {
-    [SerializeField] private StateActionSO[] _actions = null;
+    [SerializeField] private StateActionSO[] _actions;
 
     /// <summary>
-    /// Will create a new state or return an existing one inside <paramref name="createdInstances"/>.
+    ///     Will create a new state or return an existing one inside <paramref name="createdInstances" />.
     /// </summary>
     internal State GetState(StateMachine stateMachine,
         Dictionary<ScriptableObject, object> createdInstances)
@@ -30,9 +29,9 @@ public class StateSO : ScriptableObject
     private static StateAction[] GetActions(StateActionSO[] scriptableActions,
         StateMachine stateMachine, Dictionary<ScriptableObject, object> createdInstances)
     {
-        int count = scriptableActions.Length;
+        var count = scriptableActions.Length;
         var actions = new StateAction[count];
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             actions[i] = scriptableActions[i].GetAction(stateMachine, createdInstances);
 
         return actions;

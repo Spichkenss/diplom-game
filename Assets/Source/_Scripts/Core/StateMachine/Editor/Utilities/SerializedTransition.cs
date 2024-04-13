@@ -1,6 +1,5 @@
 ﻿using UnityEditor;
 
-
 internal readonly struct SerializedTransition
 {
     internal readonly SerializedProperty Transition;

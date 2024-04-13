@@ -3,15 +3,15 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using static UnityEditor.EditorGUI;
+using Object = UnityEngine.Object;
 
 
 internal class AddTransitionHelper : IDisposable
 {
-    internal SerializedTransition SerializedTransition { get; }
-    private readonly SerializedObject _transition;
-    private readonly ReorderableList _list;
     private readonly TransitionTableEditor _editor;
-    private bool _toggle = false;
+    private readonly ReorderableList _list;
+    private readonly SerializedObject _transition;
+    private bool _toggle;
 
     internal AddTransitionHelper(TransitionTableEditor editor)
     {
@@ -22,13 +22,22 @@ internal class AddTransitionHelper : IDisposable
         SetupConditionsList(_list);
     }
 
+    internal SerializedTransition SerializedTransition { get; }
+
+    public void Dispose()
+    {
+        Object.DestroyImmediate(_transition.targetObject);
+        _transition.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     internal void Display(Rect position)
     {
         position.x += 8;
         position.width -= 16;
         var rect = position;
-        float listHeight = _list.GetHeight();
-        float singleLineHeight = EditorGUIUtility.singleLineHeight;
+        var listHeight = _list.GetHeight();
+        var singleLineHeight = EditorGUIUtility.singleLineHeight;
 
         // Display add button only if not already adding a transition
         if (!_toggle)
@@ -82,12 +91,18 @@ internal class AddTransitionHelper : IDisposable
             if (GUI.Button(position, "Add Transition"))
             {
                 if (SerializedTransition.FromState.objectReferenceValue == null)
+                {
                     Debug.LogException(new ArgumentNullException("FromState"));
+                }
                 else if (SerializedTransition.ToState.objectReferenceValue == null)
+                {
                     Debug.LogException(new ArgumentNullException("ToState"));
+                }
                 else if (SerializedTransition.FromState.objectReferenceValue ==
                          SerializedTransition.ToState.objectReferenceValue)
+                {
                     Debug.LogException(new InvalidOperationException("FromState and ToState are the same."));
+                }
                 else
                 {
                     _editor.AddTransition(SerializedTransition);
@@ -96,10 +111,7 @@ internal class AddTransitionHelper : IDisposable
             }
 
             position.x += rect.width / 2;
-            if (GUI.Button(position, "Cancel"))
-            {
-                _toggle = false;
-            }
+            if (GUI.Button(position, "Cancel")) _toggle = false;
         }
 
         void StatePropField(Rect pos, string label, SerializedProperty prop)
@@ -112,20 +124,13 @@ internal class AddTransitionHelper : IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        UnityEngine.Object.DestroyImmediate(_transition.targetObject);
-        _transition.Dispose();
-        GC.SuppressFinalize(this);
-    }
-
     private static void SetupConditionsList(ReorderableList reorderableList)
     {
         reorderableList.elementHeight *= 2.3f;
         reorderableList.drawHeaderCallback += rect => GUI.Label(rect, "Conditions");
         reorderableList.onAddCallback += list =>
         {
-            int count = list.count;
+            var count = list.count;
             list.serializedProperty.InsertArrayElementAtIndex(count);
             var prop = list.serializedProperty.GetArrayElementAtIndex(count);
             prop.FindPropertyRelative("Condition").objectReferenceValue = null;
@@ -133,49 +138,49 @@ internal class AddTransitionHelper : IDisposable
             prop.FindPropertyRelative("Operator").enumValueIndex = 0;
         };
 
-        reorderableList.drawElementCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementCallback += (rect, index, isActive, isFocused) =>
         {
             var prop = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
             rect = new Rect(rect.x, rect.y + 2.5f, rect.width, EditorGUIUtility.singleLineHeight);
             var condition = prop.FindPropertyRelative("Condition");
             if (condition.objectReferenceValue != null)
             {
-                string label = condition.objectReferenceValue.name;
+                var label = condition.objectReferenceValue.name;
                 GUI.Label(rect, "If");
                 GUI.Label(new Rect(rect.x + 20, rect.y, rect.width, rect.height), label, EditorStyles.boldLabel);
-                EditorGUI.PropertyField(new Rect(rect.x + rect.width - 180, rect.y, 20, rect.height), condition,
+                PropertyField(new Rect(rect.x + rect.width - 180, rect.y, 20, rect.height), condition,
                     GUIContent.none);
             }
             else
             {
-                EditorGUI.PropertyField(new Rect(rect.x, rect.y, 150, rect.height), condition, GUIContent.none);
+                PropertyField(new Rect(rect.x, rect.y, 150, rect.height), condition, GUIContent.none);
             }
 
-            EditorGUI.LabelField(new Rect(rect.x + rect.width - 120, rect.y, 20, rect.height), "Is");
-            EditorGUI.PropertyField(new Rect(rect.x + rect.width - 60, rect.y, 60, rect.height),
+            LabelField(new Rect(rect.x + rect.width - 120, rect.y, 20, rect.height), "Is");
+            PropertyField(new Rect(rect.x + rect.width - 60, rect.y, 60, rect.height),
                 prop.FindPropertyRelative("ExpectedResult"), GUIContent.none);
-            EditorGUI.PropertyField(
+            PropertyField(
                 new Rect(rect.x + 20, rect.y + EditorGUIUtility.singleLineHeight + 5, 60, rect.height),
                 prop.FindPropertyRelative("Operator"), GUIContent.none);
         };
 
         reorderableList.onChangedCallback += list =>
             reorderableList.serializedProperty.serializedObject.ApplyModifiedProperties();
-        reorderableList.drawElementBackgroundCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementBackgroundCallback += (rect, index, isActive, isFocused) =>
         {
             if (isFocused)
-                EditorGUI.DrawRect(rect, ContentStyle.Focused);
+                DrawRect(rect, ContentStyle.Focused);
 
             if (index % 2 != 0)
-                EditorGUI.DrawRect(rect, ContentStyle.ZebraDark);
+                DrawRect(rect, ContentStyle.ZebraDark);
             else
-                EditorGUI.DrawRect(rect, ContentStyle.ZebraLight);
+                DrawRect(rect, ContentStyle.ZebraLight);
         };
     }
 
     // SO to serialize a TransitionItem
     internal class TransitionItemSO : ScriptableObject
     {
-        public TransitionTableSO.TransitionItem Item = default;
+        public TransitionTableSO.TransitionItem Item;
     }
 }

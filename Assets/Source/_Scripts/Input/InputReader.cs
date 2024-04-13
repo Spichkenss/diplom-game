@@ -5,12 +5,6 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(fileName = "SO_InputReader", menuName = "Scriptable Objects/Input/SO_InputReader")]
 public class InputReader : ScriptableObject, InputActions.IPlayerActions
 {
-    public event UnityAction<Vector2> MoveEvent = delegate { };
-    public event UnityAction<Vector2> LookEvent = delegate { };
-    public event UnityAction<bool> ShootEvent = delegate { };
-    public event UnityAction ReloadEvent = delegate { };
-    public event UnityAction InteractEvent = delegate { };
-
     private InputActions _inputActions;
 
     private void OnEnable()
@@ -52,4 +46,10 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
 
         InteractEvent.Invoke();
     }
+
+    public event UnityAction<Vector2> MoveEvent = delegate { };
+    public event UnityAction<Vector2> LookEvent = delegate { };
+    public event UnityAction<bool> ShootEvent = delegate { };
+    public event UnityAction ReloadEvent = delegate { };
+    public event UnityAction InteractEvent = delegate { };
 }

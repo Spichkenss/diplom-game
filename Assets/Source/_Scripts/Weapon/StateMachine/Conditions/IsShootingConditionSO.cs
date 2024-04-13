@@ -1,35 +1,37 @@
 ﻿using UnityEngine;
 
-
 [CreateAssetMenu(
-	fileName = "SO_IsShootingHoldingCondition",
-	menuName = "Scriptable Objects/State Machine/Conditions/Weapon/SO_IsShootingHoldingCondition"
+    fileName = "SO_IsShootingHoldingCondition",
+    menuName = "Scriptable Objects/State Machine/Conditions/Weapon/SO_IsShootingHoldingCondition"
 )]
 public class IsShootingPressedConditionSO : StateConditionSO
 {
-	protected override Condition CreateCondition() => new IsShootingPressedCondition();
+    protected override Condition CreateCondition()
+    {
+        return new IsShootingPressedCondition();
+    }
 }
 
 public class IsShootingPressedCondition : Condition
 {
-	protected new IsShootingPressedConditionSO OriginSO => (IsShootingPressedConditionSO)base.OriginSO;
-	private Weapon _weapon;
+    private Weapon _weapon;
+    protected new IsShootingPressedConditionSO OriginSO => (IsShootingPressedConditionSO)base.OriginSO;
 
-	public override void Awake(StateMachine stateMachine)
-	{
-		_weapon = stateMachine.GetComponent<Weapon>();
-	}
+    public override void Awake(StateMachine stateMachine)
+    {
+        _weapon = stateMachine.GetComponent<Weapon>();
+    }
 
-	protected override bool Statement()
-	{
-		return _weapon.IsShootingHolding;
-	}
+    protected override bool Statement()
+    {
+        return _weapon.IsShootingHolding;
+    }
 
-	public override void OnStateEnter()
-	{
-	}
+    public override void OnStateEnter()
+    {
+    }
 
-	public override void OnStateExit()
-	{
-	}
+    public override void OnStateExit()
+    {
+    }
 }

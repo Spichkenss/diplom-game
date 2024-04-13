@@ -1,12 +1,12 @@
-﻿interface IStateComponent
+﻿internal interface IStateComponent
 {
     /// <summary>
-    /// Called when entering the state.
+    ///     Called when entering the state.
     /// </summary>
     void OnStateEnter();
 
     /// <summary>
-    /// Called when leaving the state.
+    ///     Called when leaving the state.
     /// </summary>
     void OnStateExit();
 }

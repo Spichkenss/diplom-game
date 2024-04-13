@@ -7,24 +7,36 @@ using Object = UnityEngine.Object;
 
 
 [CustomEditor(typeof(TransitionTableSO))]
-internal class TransitionTableEditor : UnityEditor.Editor
+internal class TransitionTableEditor : Editor
 {
-    // Property with all the transitions.
-    private SerializedProperty _transitions;
-
-    // _fromStates and _transitionsByFromStates form a State->Transitions dictionary.
-    private List<Object> _fromStates;
-    private List<List<TransitionDisplayHelper>> _transitionsByFromStates;
-
-    // Index of the state currently toggled on, -1 if none is.
-    internal int _toggledIndex = -1;
-
     // Helper class to add new transitions.
     private AddTransitionHelper _addTransitionHelper;
 
     // Editor to display the StateSO inspector.
-    private UnityEditor.Editor _cachedStateEditor;
+    private Editor _cachedStateEditor;
     private bool _displayStateEditor;
+
+    // _fromStates and _transitionsByFromStates form a State->Transitions dictionary.
+    private List<Object> _fromStates;
+
+    // Index of the state currently toggled on, -1 if none is.
+    internal int _toggledIndex = -1;
+
+    // Property with all the transitions.
+    private SerializedProperty _transitions;
+    private List<List<TransitionDisplayHelper>> _transitionsByFromStates;
+
+    /// <summary>
+    ///     Method to fully reset the editor. Used whenever adding, removing and reordering transitions.
+    /// </summary>
+    internal void Reset()
+    {
+        serializedObject.Update();
+        var toggledState = _toggledIndex > -1 ? _fromStates[_toggledIndex] : null;
+        _transitions = serializedObject.FindProperty("_transitions");
+        GroupByFromState();
+        _toggledIndex = toggledState ? _fromStates.IndexOf(toggledState) : -1;
+    }
 
     private void OnEnable()
     {
@@ -37,18 +49,6 @@ internal class TransitionTableEditor : UnityEditor.Editor
     {
         Undo.undoRedoPerformed -= Reset;
         _addTransitionHelper?.Dispose();
-    }
-
-    /// <summary>
-    /// Method to fully reset the editor. Used whenever adding, removing and reordering transitions.
-    /// </summary>
-    internal void Reset()
-    {
-        serializedObject.Update();
-        var toggledState = _toggledIndex > -1 ? _fromStates[_toggledIndex] : null;
-        _transitions = serializedObject.FindProperty("_transitions");
-        GroupByFromState();
-        _toggledIndex = toggledState ? _fromStates.IndexOf(toggledState) : -1;
     }
 
     public override void OnInspectorGUI()
@@ -73,13 +73,13 @@ internal class TransitionTableEditor : UnityEditor.Editor
 
 
         Separator();
-        EditorGUILayout.HelpBox(
+        HelpBox(
             "Edit the Actions that a State performs per frame. The order represent the order of execution.",
             MessageType.Info);
         Separator();
 
         // State name
-        EditorGUILayout.LabelField(_cachedStateEditor.target.name, EditorStyles.boldLabel);
+        LabelField(_cachedStateEditor.target.name, EditorStyles.boldLabel);
         Separator();
         _cachedStateEditor.OnInspectorGUI();
     }
@@ -87,13 +87,13 @@ internal class TransitionTableEditor : UnityEditor.Editor
     private void TransitionTableGUI()
     {
         Separator();
-        EditorGUILayout.HelpBox(
+        HelpBox(
             "Click on any State's name to see the Transitions it contains, or click the Pencil/Wrench icon to see its Actions.",
             MessageType.Info);
         Separator();
 
         // For each fromState
-        for (int i = 0; i < _fromStates.Count; i++)
+        for (var i = 0; i < _fromStates.Count; i++)
         {
             var stateRect = BeginVertical(ContentStyle.WithPaddingAndMargins);
             EditorGUI.DrawRect(stateRect, ContentStyle.LightGray);
@@ -104,7 +104,7 @@ internal class TransitionTableEditor : UnityEditor.Editor
             var headerRect = BeginHorizontal();
             {
                 BeginVertical();
-                string label = transitions[0].SerializedTransition.FromState.objectReferenceValue.name;
+                var label = transitions[0].SerializedTransition.FromState.objectReferenceValue.name;
                 if (i == 0)
                     label += " (Initial State)";
 
@@ -127,9 +127,12 @@ internal class TransitionTableEditor : UnityEditor.Editor
 
                 // State Header Buttons
                 {
-                    bool Button(Rect position, string icon) => GUI.Button(position, EditorGUIUtility.IconContent(icon));
+                    bool Button(Rect position, string icon)
+                    {
+                        return GUI.Button(position, EditorGUIUtility.IconContent(icon));
+                    }
 
-                    var buttonRect = new Rect(x: headerRect.width - 25, y: headerRect.y, width: 35, height: 20);
+                    var buttonRect = new Rect(headerRect.width - 25, headerRect.y, 35, 20);
 
                     // Move state down
                     if (i < _fromStates.Count - 1)
@@ -224,7 +227,7 @@ internal class TransitionTableEditor : UnityEditor.Editor
     }
 
     /// <summary>
-    /// Move a state up or down
+    ///     Move a state up or down
     /// </summary>
     /// <param name="index">Index of the state in _fromStates</param>
     /// <param name="up">Moving up(true) or down(true)</param>
@@ -236,8 +239,8 @@ internal class TransitionTableEditor : UnityEditor.Editor
             index++;
 
         var transitions = _transitionsByFromStates[index];
-        int transitionIndex = transitions[0].SerializedTransition.Index;
-        int targetIndex = _transitionsByFromStates[index - 1][0].SerializedTransition.Index;
+        var transitionIndex = transitions[0].SerializedTransition.Index;
+        var targetIndex = _transitionsByFromStates[index - 1][0].SerializedTransition.Index;
         _transitions.MoveArrayElement(transitionIndex, targetIndex);
 
         ApplyModifications($"Moved {_fromStates[index].name} State {(up ? "up" : "down")}");
@@ -247,20 +250,20 @@ internal class TransitionTableEditor : UnityEditor.Editor
     }
 
     /// <summary>
-    /// Add a new transition. If a transition with the same from and to states is found,
-    /// the conditions in the new transition are added to it.
+    ///     Add a new transition. If a transition with the same from and to states is found,
+    ///     the conditions in the new transition are added to it.
     /// </summary>
     /// <param name="source">Source Transition</param>
     internal void AddTransition(SerializedTransition source)
     {
         SerializedTransition transition;
-        if (TryGetExistingTransition(source.FromState, source.ToState, out int fromIndex, out int toIndex))
+        if (TryGetExistingTransition(source.FromState, source.ToState, out var fromIndex, out var toIndex))
         {
             transition = _transitionsByFromStates[fromIndex][toIndex].SerializedTransition;
         }
         else
         {
-            int count = _transitions.arraySize;
+            var count = _transitions.arraySize;
             _transitions.InsertArrayElementAtIndex(count);
             transition = new SerializedTransition(_transitions.GetArrayElementAtIndex(count));
             transition.ClearProperties();
@@ -276,17 +279,17 @@ internal class TransitionTableEditor : UnityEditor.Editor
     }
 
     /// <summary>
-    /// Move a transition up or down
+    ///     Move a transition up or down
     /// </summary>
     /// <param name="serializedTransition">The transition to move</param>
     /// <param name="up">Move up(true) or down(false)</param>
     internal void ReorderTransition(SerializedTransition serializedTransition, bool up)
     {
-        int stateIndex = _fromStates.IndexOf(serializedTransition.FromState.objectReferenceValue);
+        var stateIndex = _fromStates.IndexOf(serializedTransition.FromState.objectReferenceValue);
         var stateTransitions = _transitionsByFromStates[stateIndex];
-        int index = stateTransitions.FindIndex(t => t.SerializedTransition.Index == serializedTransition.Index);
+        var index = stateTransitions.FindIndex(t => t.SerializedTransition.Index == serializedTransition.Index);
 
-        (int currentIndex, int targetIndex) = up
+        var (currentIndex, targetIndex) = up
             ? (serializedTransition.Index, stateTransitions[index - 1].SerializedTransition.Index)
             : (stateTransitions[index + 1].SerializedTransition.Index, serializedTransition.Index);
 
@@ -299,17 +302,17 @@ internal class TransitionTableEditor : UnityEditor.Editor
     }
 
     /// <summary>
-    /// Remove a transition.
+    ///     Remove a transition.
     /// </summary>
     /// <param name="serializedTransition">Transition to delete.</param>
     internal void RemoveTransition(SerializedTransition serializedTransition)
     {
-        int stateIndex = _fromStates.IndexOf(serializedTransition.FromState.objectReferenceValue);
+        var stateIndex = _fromStates.IndexOf(serializedTransition.FromState.objectReferenceValue);
         var stateTransitions = _transitionsByFromStates[stateIndex];
-        int count = stateTransitions.Count;
-        int index = stateTransitions.FindIndex(t => t.SerializedTransition.Index == serializedTransition.Index);
-        int deleteIndex = serializedTransition.Index;
-        string fromStateName = serializedTransition.FromState.objectReferenceValue.name;
+        var count = stateTransitions.Count;
+        var index = stateTransitions.FindIndex(t => t.SerializedTransition.Index == serializedTransition.Index);
+        var deleteIndex = serializedTransition.Index;
+        var fromStateName = serializedTransition.FromState.objectReferenceValue.name;
 
         if (index == 0 && count > 1)
             _transitions.MoveArrayElement(stateTransitions[1].SerializedTransition.Index, deleteIndex++);
@@ -362,8 +365,8 @@ internal class TransitionTableEditor : UnityEditor.Editor
     private void GroupByFromState()
     {
         var groupedTransitions = new Dictionary<Object, List<TransitionDisplayHelper>>();
-        int count = _transitions.arraySize;
-        for (int i = 0; i < count; i++)
+        var count = _transitions.arraySize;
+        for (var i = 0; i < count; i++)
         {
             var serializedTransition = new SerializedTransition(_transitions, i);
             if (serializedTransition.FromState.objectReferenceValue == null)

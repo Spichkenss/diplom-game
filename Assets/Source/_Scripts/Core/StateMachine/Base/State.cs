@@ -2,10 +2,10 @@
 
 public class State
 {
+    internal StateAction[] Actions;
     internal StateSO OriginSo;
     internal StateMachine StateMachine;
     internal StateTransition[] Transitions;
-    internal StateAction[] Actions;
 
     internal State()
     {

@@ -6,9 +6,8 @@ using static UnityEditor.EditorGUI;
 
 internal class TransitionDisplayHelper
 {
-    internal SerializedTransition SerializedTransition { get; }
-    private readonly ReorderableList _reorderableList;
     private readonly TransitionTableEditor _editor;
+    private readonly ReorderableList _reorderableList;
 
     internal TransitionDisplayHelper(SerializedTransition serializedTransition, TransitionTableEditor editor)
     {
@@ -19,11 +18,13 @@ internal class TransitionDisplayHelper
         _editor = editor;
     }
 
+    internal SerializedTransition SerializedTransition { get; }
+
     internal bool Display(ref Rect position)
     {
         var rect = position;
-        float listHeight = _reorderableList.GetHeight();
-        float singleLineHeight = EditorGUIUtility.singleLineHeight;
+        var listHeight = _reorderableList.GetHeight();
+        var singleLineHeight = EditorGUIUtility.singleLineHeight;
 
         // Reserve space
         {
@@ -52,9 +53,12 @@ internal class TransitionDisplayHelper
 
         // Buttons
         {
-            bool Button(Rect pos, string icon) => GUI.Button(pos, EditorGUIUtility.IconContent(icon));
+            bool Button(Rect pos, string icon)
+            {
+                return GUI.Button(pos, EditorGUIUtility.IconContent(icon));
+            }
 
-            var buttonRect = new Rect(x: rect.width - 25, y: rect.y + 5, width: 30, height: 18);
+            var buttonRect = new Rect(rect.width - 25, rect.y + 5, 30, 18);
 
             int i, l;
             {
@@ -121,7 +125,7 @@ internal class TransitionDisplayHelper
         reorderableList.headerHeight = 1f;
         reorderableList.onAddCallback += list =>
         {
-            int count = list.count;
+            var count = list.count;
             list.serializedProperty.InsertArrayElementAtIndex(count);
             var prop = list.serializedProperty.GetArrayElementAtIndex(count);
             prop.FindPropertyRelative("Condition").objectReferenceValue = null;
@@ -129,7 +133,7 @@ internal class TransitionDisplayHelper
             prop.FindPropertyRelative("Operator").enumValueIndex = 0;
         };
 
-        reorderableList.drawElementCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementCallback += (rect, index, isActive, isFocused) =>
         {
             var prop = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
             rect = new Rect(rect.x, rect.y + 2.5f, rect.width, EditorGUIUtility.singleLineHeight);
@@ -138,43 +142,43 @@ internal class TransitionDisplayHelper
             // Draw the picker for the Condition SO
             if (condition.objectReferenceValue != null)
             {
-                string label = condition.objectReferenceValue.name;
+                var label = condition.objectReferenceValue.name;
                 GUI.Label(rect, "If");
                 var r = rect;
                 r.x += 20;
                 r.width = 35;
-                EditorGUI.PropertyField(r, condition, GUIContent.none);
+                PropertyField(r, condition, GUIContent.none);
                 r.x += 40;
                 r.width = rect.width - 120;
                 GUI.Label(r, label, EditorStyles.boldLabel);
             }
             else
             {
-                EditorGUI.PropertyField(new Rect(rect.x, rect.y, 150, rect.height), condition, GUIContent.none);
+                PropertyField(new Rect(rect.x, rect.y, 150, rect.height), condition, GUIContent.none);
             }
 
             // Draw the boolean value expected by the condition (i.e. "Is True", "Is False")
-            EditorGUI.LabelField(new Rect(rect.x + rect.width - 80, rect.y, 20, rect.height), "Is");
-            EditorGUI.PropertyField(new Rect(rect.x + rect.width - 60, rect.y, 60, rect.height),
+            LabelField(new Rect(rect.x + rect.width - 80, rect.y, 20, rect.height), "Is");
+            PropertyField(new Rect(rect.x + rect.width - 60, rect.y, 60, rect.height),
                 prop.FindPropertyRelative("ExpectedResult"), GUIContent.none);
 
             // Only display the logic condition if there's another one after this
             if (index < reorderableList.count - 1)
-                EditorGUI.PropertyField(
+                PropertyField(
                     new Rect(rect.x + 20, rect.y + EditorGUIUtility.singleLineHeight + 5, 60, rect.height),
                     prop.FindPropertyRelative("Operator"), GUIContent.none);
         };
 
         reorderableList.onChangedCallback += list => list.serializedProperty.serializedObject.ApplyModifiedProperties();
-        reorderableList.drawElementBackgroundCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementBackgroundCallback += (rect, index, isActive, isFocused) =>
         {
             if (isFocused)
-                EditorGUI.DrawRect(rect, ContentStyle.Focused);
+                DrawRect(rect, ContentStyle.Focused);
 
             if (index % 2 != 0)
-                EditorGUI.DrawRect(rect, ContentStyle.ZebraDark);
+                DrawRect(rect, ContentStyle.ZebraDark);
             else
-                EditorGUI.DrawRect(rect, ContentStyle.ZebraLight);
+                DrawRect(rect, ContentStyle.ZebraLight);
         };
     }
 }

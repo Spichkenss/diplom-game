@@ -1,19 +1,17 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Breaker : MonoBehaviour
 {
-    private bool _isInsideCollider;
     private Breakable _currentBreakable;
     private Coroutine _damageCoroutine;
+    private bool _isInsideCollider;
 
-    public bool IsBreakingSomething { get; private set; }
+    public bool IsBreakingSomething { get; }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent<Breakable>(out Breakable breakable)) return;
+        if (!other.TryGetComponent(out Breakable breakable)) return;
         _isInsideCollider = true;
         _currentBreakable = breakable;
         if (_damageCoroutine == null)
@@ -22,7 +20,7 @@ public class Breaker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.TryGetComponent<Breakable>(out Breakable breakable)) return;
+        if (!other.TryGetComponent(out Breakable breakable)) return;
         _isInsideCollider = false;
         if (_currentBreakable == breakable && _damageCoroutine != null)
         {

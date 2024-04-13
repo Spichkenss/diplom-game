@@ -9,7 +9,7 @@ public class Breakable : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        float updatedHealth = _health.Decrease(damage);
+        var updatedHealth = _health.Decrease(damage);
 
         if (updatedHealth <= 0)
         {

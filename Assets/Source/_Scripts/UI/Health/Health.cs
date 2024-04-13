@@ -11,10 +11,7 @@ public class Health : MonoBehaviour
     public float Increase(float amount)
     {
         _currentValue += amount;
-        if (_currentValue > _maxValue)
-        {
-            _currentValue = _maxValue;
-        }
+        if (_currentValue > _maxValue) _currentValue = _maxValue;
         HealthChanged.Invoke(_currentValue);
         return _currentValue;
     }
@@ -22,10 +19,7 @@ public class Health : MonoBehaviour
     public float Decrease(float amount)
     {
         _currentValue -= amount;
-        if (_currentValue < 0)
-        {
-            _currentValue = 0;
-        }
+        if (_currentValue < 0) _currentValue = 0;
         HealthChanged.Invoke(_currentValue);
         return _currentValue;
     }

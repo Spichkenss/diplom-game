@@ -1,21 +1,25 @@
 ﻿using UnityEngine;
 
-
 [CreateAssetMenu(
     fileName = "SO_HandleRotationAction",
     menuName = "Scriptable Objects/State Machine/Actions/Player/SO_HandleRotationAction"
 )]
-public class HandleRotationActionSO : StateActionSO<HandleRotationAction>
+public class HandleRotationActionSO : StateActionSO
 {
-    public float rotationSpeed = 30f;
+    public float rotationSpeed = 20f;
+
+    protected override StateAction CreateAction()
+    {
+        return new HandleRotationAction();
+    }
 }
 
 public class HandleRotationAction : StateAction
 {
-    protected new HandleRotationActionSO OriginSO => (HandleRotationActionSO)base.OriginSO;
-    private Transform _transform;
-    private RotationHandler _rotationHandler;
     private Camera _camera;
+    private RotationHandler _rotationHandler;
+    private Transform _transform;
+    protected new HandleRotationActionSO OriginSO => (HandleRotationActionSO)base.OriginSO;
 
     public override void Awake(StateMachine stateMachine)
     {
@@ -27,17 +31,18 @@ public class HandleRotationAction : StateAction
     public override void OnUpdate()
     {
         // Переводим координаты курсора в мировые координаты
-        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        var mouseWorldPosition = GetMouseWorldPosition();
 
         // Находим направление курсора от игрока
-        Vector3 direction = mouseWorldPosition - _transform.position;
+        var direction = mouseWorldPosition - _transform.position;
         direction.y = 0; // Игнорируем изменения высоты
 
         // Поворачиваем игрока в сторону курсора
         if (direction == Vector3.zero) return;
 
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        _transform.rotation = Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * OriginSO.rotationSpeed);
+        var lookRotation = Quaternion.LookRotation(direction);
+        _transform.rotation =
+            Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * OriginSO.rotationSpeed);
 
         Debug.DrawRay(_transform.position, _transform.forward * 100f, Color.red);
     }

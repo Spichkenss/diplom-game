@@ -3,13 +3,18 @@ using UnityEngine;
 public class FollowByCursor : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
+    private Camera _camera;
 
     private Vector2 _mousePosition;
-    private Camera _camera;
 
     private void Awake()
     {
         _camera = Camera.main;
+    }
+
+    private void Update()
+    {
+        MoveAimTargetToMousePosition();
     }
 
     private void OnEnable()
@@ -22,15 +27,10 @@ public class FollowByCursor : MonoBehaviour
         _inputReader.LookEvent -= OnLook;
     }
 
-    private void Update()
-    {
-        MoveAimTargetToMousePosition();
-    }
-
     private void MoveAimTargetToMousePosition()
     {
         // Переводим координаты курсора в мировые координаты
-        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        var mouseWorldPosition = GetMouseWorldPosition();
         mouseWorldPosition.y = 0.5f;
         transform.position = mouseWorldPosition;
     }

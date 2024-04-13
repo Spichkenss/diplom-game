@@ -2,12 +2,11 @@
 using UnityEditorInternal;
 using UnityEngine;
 
-
 [CustomEditor(typeof(StateSO))]
-public class StateEditor : UnityEditor.Editor
+public class StateEditor : Editor
 {
-    private ReorderableList _list;
     private SerializedProperty _actions;
+    private ReorderableList _list;
 
     private void OnEnable()
     {
@@ -40,13 +39,13 @@ public class StateEditor : UnityEditor.Editor
         reorderableList.drawHeaderCallback += rect => GUI.Label(rect, "Actions");
         reorderableList.onAddCallback += list =>
         {
-            int count = list.count;
+            var count = list.count;
             list.serializedProperty.InsertArrayElementAtIndex(count);
             var prop = list.serializedProperty.GetArrayElementAtIndex(count);
             prop.objectReferenceValue = null;
         };
 
-        reorderableList.drawElementCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementCallback += (rect, index, isActive, isFocused) =>
         {
             var r = rect;
             r.height = EditorGUIUtility.singleLineHeight;
@@ -63,21 +62,23 @@ public class StateEditor : UnityEditor.Editor
                 r.x += 42;
 
                 //The name of the StateAction
-                string label = prop.objectReferenceValue.name;
+                var label = prop.objectReferenceValue.name;
                 GUI.Label(r, label, EditorStyles.boldLabel);
 
                 //The description
                 r.x += 180;
                 r.width = rect.width - 50 - 180;
-                string description = (prop.objectReferenceValue as DescriptionSMActionBaseSO).description;
+                var description = (prop.objectReferenceValue as DescriptionSMActionBaseSO).description;
                 GUI.Label(r, description);
             }
             else
+            {
                 EditorGUI.PropertyField(r, prop, GUIContent.none);
+            }
         };
 
         reorderableList.onChangedCallback += list => list.serializedProperty.serializedObject.ApplyModifiedProperties();
-        reorderableList.drawElementBackgroundCallback += (Rect rect, int index, bool isActive, bool isFocused) =>
+        reorderableList.drawElementBackgroundCallback += (rect, index, isActive, isFocused) =>
         {
             if (isFocused)
                 EditorGUI.DrawRect(rect, ContentStyle.Focused);

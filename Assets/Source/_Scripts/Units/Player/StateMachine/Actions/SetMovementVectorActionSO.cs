@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 
-
 [CreateAssetMenu(
     fileName = "SO_SetMovementVectorAction",
     menuName = "Scriptable Objects/State Machine/Actions/Player/SO_SetMovementVectorAction"
 )]
-public class SetMovementVectorActionSO : StateActionSO<SetMovementVectorAction>
+public class SetMovementVectorActionSO : StateActionSO
 {
     public float moveSpeed = 10f;
+
+    protected override StateAction CreateAction()
+    {
+        return new SetMovementVectorAction();
+    }
 }
 
 public class SetMovementVectorAction : StateAction
 {
-    protected new SetMovementVectorActionSO OriginSO => (SetMovementVectorActionSO)base.OriginSO;
     private MovementHandler _movementHandler;
+    protected new SetMovementVectorActionSO OriginSO => (SetMovementVectorActionSO)base.OriginSO;
 
     public override void Awake(StateMachine stateMachine)
     {

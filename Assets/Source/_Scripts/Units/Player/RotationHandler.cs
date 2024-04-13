@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class RotationHandler : MonoBehaviour
 {
-    [NonSerialized] public Vector2 MousePosition;
-
     [SerializeField] private InputReader _inputReader;
+    [NonSerialized] public Vector2 MousePosition;
 
     private void OnEnable()
     {

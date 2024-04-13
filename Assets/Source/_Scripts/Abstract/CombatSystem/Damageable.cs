@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,11 +9,8 @@ public class Damageable : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        float updatedHealth = _health.Decrease(damage);
+        var updatedHealth = _health.Decrease(damage);
 
-        if (updatedHealth <= 0)
-        {
-            RanOutOfHealth.Invoke();
-        }
+        if (updatedHealth <= 0) RanOutOfHealth.Invoke();
     }
 }
