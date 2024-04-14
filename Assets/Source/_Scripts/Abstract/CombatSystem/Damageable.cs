@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Health))]
 public class Damageable : MonoBehaviour
 {
     [SerializeField] private Health _health;

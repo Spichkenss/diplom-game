@@ -3,24 +3,23 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _currentValue;
-    [SerializeField] private float _maxValue;
-
+    public float currentValue = 100;
+    public float maxValue = 100;
     public UnityAction<float> HealthChanged = delegate { };
 
     public float Increase(float amount)
     {
-        _currentValue += amount;
-        if (_currentValue > _maxValue) _currentValue = _maxValue;
-        HealthChanged.Invoke(_currentValue);
-        return _currentValue;
+        currentValue += amount;
+        if (currentValue > maxValue) currentValue = maxValue;
+        HealthChanged.Invoke(currentValue);
+        return currentValue;
     }
 
     public float Decrease(float amount)
     {
-        _currentValue -= amount;
-        if (_currentValue < 0) _currentValue = 0;
-        HealthChanged.Invoke(_currentValue);
-        return _currentValue;
+        currentValue -= amount;
+        if (currentValue < 0) currentValue = 0;
+        HealthChanged.Invoke(currentValue);
+        return currentValue;
     }
 }
