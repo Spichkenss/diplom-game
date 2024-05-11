@@ -2,10 +2,13 @@
 
 [CreateAssetMenu(
     fileName = "SO_ControlRigBuilderAction",
-    menuName = "Scriptable Objects/State Machine/Actions/Common/SO_ControlRigBuilderAction"
+    menuName = "Scriptable Objects/State Machine/Actions/Weapon/SO_ControlRigBuilderAction"
 )]
 public class ControlRigBuilderActionSO : StateActionSO
 {
+    public StateAction.SpecificMoment moment;
+    public bool setTo;
+    
     protected override StateAction CreateAction()
     {
         return new ControlRigBuilderAction();
@@ -24,15 +27,21 @@ public class ControlRigBuilderAction : StateAction
 
     public override void OnUpdate()
     {
+        if (OriginSO.moment == SpecificMoment.OnUpdate) SetRigBuilderState();
     }
 
     public override void OnStateEnter()
     {
-        _weapon.RigBuilder.enabled = false;
+        if (OriginSO.moment == SpecificMoment.OnStateEnter) SetRigBuilderState();
     }
 
     public override void OnStateExit()
     {
-        _weapon.RigBuilder.enabled = true;
+        if (OriginSO.moment == SpecificMoment.OnStateExit) SetRigBuilderState();
+    }
+
+    private void SetRigBuilderState()
+    {
+        _weapon.RigBuilder.enabled = OriginSO.setTo;
     }
 }

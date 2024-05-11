@@ -3,9 +3,16 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    public float currentValue = 100;
+    [HideInInspector] public float currentValue;
+    
     public float maxValue = 100;
     public UnityAction<float> HealthChanged = delegate { };
+    public UnityAction UnitDied = delegate { };
+
+    private void Awake()
+    {
+        currentValue = maxValue;
+    }
 
     public float Increase(float amount)
     {
@@ -18,7 +25,11 @@ public class Health : MonoBehaviour
     public float Decrease(float amount)
     {
         currentValue -= amount;
-        if (currentValue < 0) currentValue = 0;
+        if (currentValue < 0)
+        {
+            currentValue = 0;
+            UnitDied.Invoke();
+        }
         HealthChanged.Invoke(currentValue);
         return currentValue;
     }

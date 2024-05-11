@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8834c90851ba8ab41834a9171213ac2f, type: 3}
-  m_Name: SO_DisableRigBuilderAction
+  m_Script: {fileID: 11500000, guid: 29259641327b83a498e0f08cac802586, type: 3}
+  m_Name: SO_PlayIdleAnimation
   m_EditorClassIdentifier: 
   description: 
+  moveXParamName: MoveX
+  moveZParamName: MoveZ

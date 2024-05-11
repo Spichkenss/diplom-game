@@ -15,6 +15,7 @@ public class Weapon : MonoBehaviour
     public RigBuilder RigBuilder;
 
     public event UnityAction ShotFired = delegate { };
+    public event UnityAction<int, int> BulletCountChange = delegate { };
 
     private void OnEnable()
     {
@@ -28,9 +29,15 @@ public class Weapon : MonoBehaviour
         _inputReader.ReloadEvent -= OnReloadingPressed;
     }
 
+    private void Start()
+    {
+        InvokeCurrentBulletCount();
+    }
+
     public virtual void Shoot()
     {
         ShotFired.Invoke();
+        InvokeCurrentBulletCount();
     }
 
     private void OnShootingHold(bool state)
@@ -48,6 +55,11 @@ public class Weapon : MonoBehaviour
         StartCoroutine(Reload());
     }
 
+    private void InvokeCurrentBulletCount()
+    {
+        BulletCountChange.Invoke(WeaponData.currentAmmo, WeaponData.extraAmmo);
+    }
+
     private IEnumerator Reload()
     {
         WeaponData.isReloading = true;
@@ -62,11 +74,13 @@ public class Weapon : MonoBehaviour
             {
                 diff = WeaponData.extraAmmo;
             }
+
             WeaponData.currentAmmo += diff;
             WeaponData.extraAmmo -= diff;
-
         }
 
         WeaponData.isReloading = false;
+        
+        InvokeCurrentBulletCount();
     }
 }

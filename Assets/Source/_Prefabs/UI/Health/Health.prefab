@@ -137,8 +137,8 @@ RectTransform:
   m_GameObject: {fileID: 3743019239608096611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7775135796046307667}
   - {fileID: 1156311929471441341}
@@ -164,6 +164,9 @@ MonoBehaviour:
   _health: {fileID: 0}
   _healthSlider: {fileID: 597886507247525291}
   _healthTextAmount: {fileID: 5138814104247019925}
+  _lowHealthColor: {r: 90, g: -8910, b: -8910, a: 1}
+  _midHealthColor: {r: 1, g: 0.6404138, b: 0, a: 1}
+  _highHealthColor: {r: 0.07313001, g: 1, b: 0, a: 1}
 --- !u!1 &3880915337922222596
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,15 +439,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
+  m_ActiveFontFeatures: 
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0

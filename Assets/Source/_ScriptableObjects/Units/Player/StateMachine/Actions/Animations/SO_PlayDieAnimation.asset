@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1509826dbd2355f4c9abd9436d7ce3b6, type: 3}
-  m_Name: SO_PlayIdleAnimationAction
+  m_Name: SO_PlayDieAnimation
   m_EditorClassIdentifier: 
-  description: Player idle animation. Starts on state enter
-  parameterType: 0
+  description: 
+  parameterType: 3
   moment: 0
-  animationHash: IsMoving
+  animationHash: IsDead
   boolValue: 0
   intValue: 0
   floatValue: 0

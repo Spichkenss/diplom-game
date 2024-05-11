@@ -11,10 +11,9 @@ public class Breakable : MonoBehaviour
     {
         var updatedHealth = _health.Decrease(damage);
 
-        if (updatedHealth <= 0)
-        {
-            WasBroken.Invoke();
-            Destroy(gameObject);
-        }
+        if (!(updatedHealth <= 0)) return;
+        
+        WasBroken.Invoke();
+        Destroy(gameObject);
     }
 }

@@ -25,8 +25,8 @@ public class PerformShotAction : StateAction
     public override void OnUpdate()
     {
         if (Time.time < _weapon.FireCooldown || _weapon.WeaponData.currentAmmo <= 0) return;
-        _weapon.Shoot();
         DecreaseCurrentAmmo(1);
+        _weapon.Shoot();
         UpdateCooldown();
     }
 

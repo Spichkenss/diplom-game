@@ -7,26 +7,25 @@ public class Breaker : MonoBehaviour
     private Coroutine _damageCoroutine;
     private bool _isInsideCollider;
 
-    public bool IsBreakingSomething { get; }
+    public bool IsBreakingSomething { get; set; }
+    
+    [field: SerializeField] public float Damage { get; set; } 
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Breakable breakable)) return;
         _isInsideCollider = true;
         _currentBreakable = breakable;
-        if (_damageCoroutine == null)
-            _damageCoroutine = StartCoroutine(DamageBuilding());
+        _damageCoroutine ??= StartCoroutine(DamageBuilding());
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.TryGetComponent(out Breakable breakable)) return;
         _isInsideCollider = false;
-        if (_currentBreakable == breakable && _damageCoroutine != null)
-        {
-            StopCoroutine(_damageCoroutine);
-            _damageCoroutine = null;
-        }
+        if (_currentBreakable != breakable || _damageCoroutine == null) return;
+        StopCoroutine(_damageCoroutine);
+        _damageCoroutine = null;
     }
 
     private IEnumerator DamageBuilding()
@@ -35,7 +34,7 @@ public class Breaker : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             if (_currentBreakable != null)
-                _currentBreakable.TakeDamage(10f);
+                _currentBreakable.TakeDamage(Damage);
         }
     }
 }

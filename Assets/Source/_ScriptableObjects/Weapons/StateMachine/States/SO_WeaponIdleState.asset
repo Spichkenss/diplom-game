@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa668e2eb39e9c94a8baf7d0288e2a7d, type: 3}
   m_Name: SO_WeaponIdleState
   m_EditorClassIdentifier: 
-  _actions: []
+  _actions:
+  - {fileID: 11400000, guid: 46e19a840bf5eb34193542e456d56fe1, type: 2}

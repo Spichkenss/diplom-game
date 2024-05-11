@@ -15,7 +15,7 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
             _inputActions.Player.SetCallbacks(this);
         }
 
-        _inputActions.Player.Enable();
+        EnableGameplayInput();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -47,6 +47,16 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
         InteractEvent.Invoke();
     }
 
+    private void DisablePlayerInput()
+    {
+        _inputActions.Player.Disable();    
+    }
+
+    private void EnableGameplayInput()
+    {
+        _inputActions.Player.Enable();
+    }
+    
     public event UnityAction<Vector2> MoveEvent = delegate { };
     public event UnityAction<Vector2> LookEvent = delegate { };
     public event UnityAction<bool> ShootEvent = delegate { };
